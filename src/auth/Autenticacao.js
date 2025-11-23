@@ -19,6 +19,8 @@ export const getToken = () => {
   try {
     const decoded = jwtDecode(autenticacao.token);
 
+    console.log(decoded);
+
     const agora = Math.floor(Date.now() / 1000);
 
     if (decoded.exp <= agora) {
@@ -58,7 +60,9 @@ export const getUsuario = () => {
       return null;
     }
 
-    return decoded;
+    console.log(" Usuário decodificado:", decoded);
+
+    return decoded.usuario;
   } catch (err) {
     logout();
     return null;
@@ -69,6 +73,7 @@ export const getUsuario = () => {
  * Grava token + flag auth
  */
 export const gravaAutenticacao = (json) => {
+  console.log("Gravando autenticação:", json);
   localStorage.setItem(`${NOMEAPP}/autenticacao`, JSON.stringify(json));
 };
 
@@ -83,4 +88,5 @@ export const logout = () => {
       token: "",
     })
   );
+  window.location.href = "/";
 };

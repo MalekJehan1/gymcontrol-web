@@ -13,15 +13,23 @@ export default function Login() {
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const navigateToPage = () => {
+    navigate("/home");
+  };
+
   const fazerLogin = async ({ email, senha }) => {
     setErro("");
     setLoading(true);
     try {
       const resp = await api.post("/auth/login", { email, senha });
-      gravaAutenticacao({ auth: true, token: resp.data.token });
-      console.log("Login bem-sucedido, redirecionando para a home...");
-      console.log(resp.data);
-      navigate("/");
+
+      if (resp.data.auth === true) {
+        gravaAutenticacao(resp.data);
+        console.log("Login bem-sucedido, redirecionando para a home...");
+        console.log(resp.data);
+
+        navigateToPage();
+      }
     } catch {
       setErro("Email ou senha incorretos.");
     } finally {
@@ -29,18 +37,26 @@ export default function Login() {
     }
   };
 
-  const fazerRegistro = async ({ nome, email, senha }) => {
+  const fazerRegistro = async ({ nome, sobrenome, email, senha }) => {
     setErro("");
     setLoading(true);
     try {
-      await api.post("/auth/register", { nome, email, senha });
+      console.log(nome + sobrenome + email + senha);
 
       // Login automático após registrar
-      const resp = await api.post("/auth/login", { email, senha });
-      gravaAutenticacao({ auth: true, token: resp.data.token });
-      console.log("Registro bem-sucedido, redirecionando para a home...");
-      console.log(resp.data);
-      navigate("/");
+      const resp = await api.post("/auth/register", {
+        nome,
+        sobrenome,
+        email,
+        senha,
+      });
+
+      if (resp.data.auth === true) {
+        gravaAutenticacao(resp.data);
+        console.log("Login bem-sucedido, redirecionando para a home...");
+        console.log(resp.data);
+        navigateToPage();
+      }
     } catch {
       setErro("Erro ao registrar.");
     } finally {
@@ -64,7 +80,7 @@ export default function Login() {
                     backdrop-blur-lg p-10 rounded-3xl shadow-2xl w-full max-w-md text-white"
         >
           {/* Título */}
-          <h3 className="text-3xl font-extrabold mb-8 text-white drop-shadow-lg text-center">
+          <h3 className="text-3xl font-extrabold mb-8  text-white drop-shadow-lg text-center">
             {modo === "login" ? "Entrar" : "Criar Conta"}
           </h3>
 
