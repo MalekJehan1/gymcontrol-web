@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import api from "../api/api";
 import { gravaAutenticacao } from "../auth/Autenticacao";
-import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import loginBg from "../assets/login-image.jpg";
+import { getToken } from "../auth/Autenticacao";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [modo, setModo] = useState("login");
+  const location = useLocation();
+  //
+  const [modo, setModo] = useState(location.state?.modo || "login");
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.modo) {
+      setModo(location.state.modo);
+    }
+  }, [location.state]);
+
+  // bloqueia acesso ao login se já estiver autenticado
+  if (getToken()) {
+    return <Navigate to="/home" replace />;
+  }
 
   const navigateToPage = () => {
     navigate("/home");
@@ -80,7 +93,7 @@ export default function Login() {
                     backdrop-blur-lg p-10 rounded-3xl shadow-2xl w-full max-w-md text-white"
         >
           {/* Título */}
-          <h3 className="text-3xl font-extrabold mb-8  text-white drop-shadow-lg text-center">
+          <h3 className="text-3xl font-extrabold mb-3  text-white drop-shadow-lg text-center">
             {modo === "login" ? "Entrar" : "Criar Conta"}
           </h3>
 
@@ -109,12 +122,12 @@ export default function Login() {
               </>
             ) : (
               <>
-                Já tem conta?{" "}
+                Já possui conta?{" "}
                 <button
                   className="text-white font-semibold hover:text-gray-300 transition-colors"
                   onClick={() => setModo("login")}
                 >
-                  Entre
+                  Acesse agora
                 </button>
               </>
             )}

@@ -24,6 +24,7 @@ export default function Home() {
 
           <Link
             to="/login"
+            state={{ modo: "register" }}
             className="px-8 py-3 rounded-xl bg-transparent border-2 border-white font-semibold hover:bg-white hover:text-black transition text-white no-underline"
           >
             Registrar
