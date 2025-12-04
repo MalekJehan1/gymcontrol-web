@@ -2,64 +2,74 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { logout, getUsuario } from "../auth/Autenticacao";
+import {
+  navbarBase,
+  logoBase,
+  logoText,
+  logoGym,
+  logoControl,
+  linkDefault,
+} from "../utils/navbarBaseClasses";
 
-function Navbar({ links = [] }) {
+function NavbarPrivada({ links = [] }) {
   const [open, setOpen] = useState(false);
   const usuario = getUsuario();
 
+  const finalLinks = [...links];
+
+  finalLinks.push({ label: "Dashboard", to: "/dashboard" });
+  finalLinks.push({ label: "Treinos", to: "/treinos" });
+
+  if (usuario?.tipo === "admin") {
+    finalLinks.push(
+      { label: "Usuários", to: "/admin/usuarios" },
+      { label: "Exercícios", to: "/admin/exercicios" }
+      // { label: "Configurações", to: "/config" }
+    );
+  }
+
   return (
-    <nav className="w-full bg-black/40 backdrop-blur-lg border-b border-neutral-800 py-4 px-8 flex items-center justify-between">
-      {/* Logo */}
-      <h1 className="text-2xl font-bold tracking-wide">
-        Gym<span className="text-blue-400">Control</span>
-      </h1>
+    <nav className={navbarBase}>
+      {/* LOGO */}
+      <Link to="/home" className={logoBase}>
+        <h1 className={logoText}>
+          <span className={logoGym}>Gym</span>
+          <span className={logoControl}>Control</span>
+        </h1>
+      </Link>
 
       {/* Links do menu */}
-      <div className="hidden md:flex items-center gap-6 text-gray-200">
-        {links.map((item, index) => (
-          <Link
-            key={index}
-            to={item.to}
-            className="hover:text-white transition text-gray-300"
-          >
+      <nav className="flex items-center gap-6 text-gray-200">
+        {finalLinks.map((item, index) => (
+          <Link key={index} to={item.to} className={linkDefault}>
             {item.label}
           </Link>
         ))}
-      </div>
+      </nav>
 
-      {/* Avatar + Dropdown */}
+      {/* Avatar */}
       <div className="relative">
-        <button
-          onClick={() => setOpen(!open)}
-          className="flex items-center justify-center"
-        >
+        <button onClick={() => setOpen(!open)}>
           <FaUserCircle className="text-4xl text-gray-300 hover:text-white transition" />
         </button>
 
         {open && (
           <div className="absolute right-0 mt-3 w-48 bg-neutral-900/90 backdrop-blur-xl rounded-xl shadow-xl border border-neutral-800 p-2">
-            <p className="text-gray-300 px-3 py-2 text-sm border-b border-neutral-700">
+            <p className="text-gray-300 px-3 py-3 text-lg border-b border-neutral-700">
               Olá{" "}
               <span className="font-semibold text-white">{usuario?.nome}</span>
             </p>
 
             <Link
               to="/perfil"
-              className="block px-3 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white rounded-lg transition"
+              className="block px-3 py-1 hover:text-gray-300 transition text-white no-underline"
             >
               Meu Perfil
             </Link>
 
-            <Link
-              to="/configuracoes"
-              className="block px-3 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white rounded-lg transition"
-            >
-              Configurações
-            </Link>
-
             <button
               onClick={() => logout()}
-              className="w-full text-left px-3 py-2 text-red-400 hover:bg-red-500/20 rounded-lg transition"
+              className="w-full text-left px-3 py-1 text-red-400 hover:bg-red-500/20 rounded-lg transition"
             >
               Sair
             </button>
@@ -70,4 +80,4 @@ function Navbar({ links = [] }) {
   );
 }
 
-export default Navbar;
+export default NavbarPrivada;

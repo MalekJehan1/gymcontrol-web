@@ -6,6 +6,15 @@ import { gravaAutenticacao } from "../auth/Autenticacao";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import loginBg from "../assets/login-image.jpg";
 import { getToken } from "../auth/Autenticacao";
+import {
+  // navbarBase,
+  // logoBase,
+  // logoText,
+  logoGym,
+  logoControl,
+  // linkDefault,
+  // buttonPrimary,
+} from "../utils/navbarBaseClasses";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -86,8 +95,15 @@ export default function Login() {
         className="hidden lg:block absolute top-0 left-0 w-1/2 h-100 object-cover opacity-30"
       />
 
+      <div className="hidden lg:flex w-1/2 h-auto items-center justify-center px-20 h-screen relative z-10">
+        <h1 className="text-7xl font-extrabold tracking-wide transition-all duration-200 group-hover:scale-105">
+          <span className={logoGym}>Gym</span>
+          <span className={logoControl}>Control</span>
+        </h1>
+      </div>
+
       {/* Formulário à direita, mais centralizado */}
-      <div className="flex flex-1 items-center justify-end px-16 min-h-screen">
+      <div className="w-1/2 ml-auto flex items-center justify-center px-20 h-screen relative z-10">
         <div
           className="bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-black/70
                     backdrop-blur-lg p-10 rounded-3xl shadow-2xl w-full max-w-md text-white"

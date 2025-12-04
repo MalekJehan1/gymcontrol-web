@@ -19,8 +19,6 @@ export const getToken = () => {
   try {
     const decoded = jwtDecode(autenticacao.token);
 
-    console.log(decoded);
-
     const agora = Math.floor(Date.now() / 1000);
 
     if (decoded.exp <= agora) {
@@ -59,8 +57,6 @@ export const getUsuario = () => {
       logout();
       return null;
     }
-
-    console.log(" Usuário decodificado:", decoded);
 
     return decoded.usuario;
   } catch (err) {

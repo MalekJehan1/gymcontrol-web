@@ -1,9 +1,10 @@
-import Layout from "../components/Layout";
 import { Link } from "react-router-dom";
+
+import NavbarPublica from "../components/NavbarPublica.jsx";
 
 export default function Home() {
   return (
-    <Layout>
+    <NavbarPublica>
       <div className="items-center flex flex-col">
         <h2 className="text-5xl font-extrabold mb-6 tracking-tight ">
           Controle Completo da Sua Academia
@@ -31,6 +32,6 @@ export default function Home() {
           </Link>
         </div>
       </div>
-    </Layout>
+    </NavbarPublica>
   );
 }
