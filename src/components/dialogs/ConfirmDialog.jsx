@@ -4,11 +4,7 @@ import { Fragment } from "react";
 export default function ConfirmDialog({ open, message, onConfirm, onCancel }) {
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-50"
-        onClose={onCancel} // fecha no ESC e ao clicar fora
-      >
+      <Dialog as="div" className="relative z-50" onClose={onCancel}>
         {/* Fundo escurecido */}
         <Transition.Child
           as={Fragment}

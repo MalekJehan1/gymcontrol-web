@@ -1,12 +1,6 @@
 import React from "react";
 
-function CardTreino({
-  treino,
-  onDetalhes,
-  onEditar,
-  onExcluir,
-  isAdmin = false,
-}) {
+function CardTreino({ treino, onDetalhes, onEdit, onDelete, isAdmin = false }) {
   return (
     <div className="bg-neutral-900 border border-neutral-700 p-5 rounded-xl">
       <div className="flex justify-between items-center">
@@ -34,14 +28,14 @@ function CardTreino({
             <>
               <button
                 className="px-3 py-1 text-sm bg-yellow-600 rounded-lg hover:bg-yellow-500"
-                onClick={() => onEditar(treino)}
+                onClick={() => onEdit(treino)}
               >
                 Editar
               </button>
 
               <button
                 className="px-3 py-1 text-sm bg-red-600 rounded-lg hover:bg-red-500"
-                onClick={() => onExcluir(treino)}
+                onClick={() => onDelete(treino)}
               >
                 Excluir
               </button>

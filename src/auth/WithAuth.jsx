@@ -16,4 +16,3 @@ const WithAuth = (Component) => {
 };
 
 export default WithAuth;
-// Retorna o token de autenticação, ou null se não estiver autenticado

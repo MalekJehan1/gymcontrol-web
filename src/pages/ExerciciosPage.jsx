@@ -27,7 +27,6 @@ function ExerciciosPage() {
 
   const [formData, setFormData] = useState({
     nome: "",
-    categoria: "",
     equipamento: "",
     descricao: "",
   });
@@ -47,7 +46,6 @@ function ExerciciosPage() {
     setEditando(null);
     setFormData({
       nome: "",
-      categoria: "",
       equipamento: "",
       descricao: "",
     });
@@ -69,7 +67,6 @@ function ExerciciosPage() {
     setEditando(ex);
     setFormData({
       nome: ex.nome,
-      categoria: ex.categoria,
       equipamento: ex.equipamento,
       descricao: ex.descricao,
     });

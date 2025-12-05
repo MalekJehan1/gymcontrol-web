@@ -2,7 +2,7 @@ import api from "../api/api";
 
 // Retorna apenas os treinos vinculados ao usuário logado
 export const getMeusTreinosAPI = async () => {
-  const response = await api.get("/treinos/");
+  const response = await api.get("/treinos/meus-treinos");
   return response.data;
 };
 

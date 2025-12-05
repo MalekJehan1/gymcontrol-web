@@ -17,7 +17,16 @@ export default function DialogTreinoDetalhes({ open, onClose, treino }) {
             {treino.descricao || "Sem descrição"}
           </p>
 
-          <h3 className="text-lg font-semibold mb-2">Exercícios</h3>
+          <p className="text-neutral-300 mb-1">
+            Professor: {treino.professor?.usuario?.nome || "Não informado"}
+          </p>
+          <p className="text-neutral-300 mb-4">
+            Aluno: {treino.aluno?.usuario?.nome || "Não informado"}
+          </p>
+
+          <h3 className="text-lg font-semibold mb-2 text-sky-600">
+            Exercícios
+          </h3>
 
           <div className="flex flex-col gap-3 max-h-80 overflow-y-auto pr-2">
             {treino.exercicios?.map((ex, i) => (
@@ -42,7 +51,7 @@ export default function DialogTreinoDetalhes({ open, onClose, treino }) {
           <div className="flex justify-end mt-6">
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600"
+              className="px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 text-red-50"
             >
               Fechar
             </button>

@@ -1,6 +1,6 @@
 export default function CardUsuarios({ usuario, onEdit, onDelete }) {
   return (
-    <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-4 flex justify-between items-center shadow-lg">
+    <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 flex justify-between items-center shadow-lg">
       <div>
         <h3 className="text-lg font-semibold text-white capitalize">
           <span>Nome:</span> {usuario.nome} {usuario.sobrenome}
@@ -15,17 +15,17 @@ export default function CardUsuarios({ usuario, onEdit, onDelete }) {
         </p>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-2">
         <button
+          className="px-3 py-1 text-sm bg-yellow-600 rounded-lg hover:bg-yellow-500"
           onClick={() => onEdit(usuario)}
-          className="text-yellow-400 hover:text-yellow-300 font-medium"
         >
           Editar
         </button>
 
         <button
+          className="px-3 py-1 text-sm bg-red-600 rounded-lg hover:bg-red-500"
           onClick={() => onDelete(usuario.id)}
-          className="text-red-500 hover:text-red-400 font-medium"
         >
           Excluir
         </button>

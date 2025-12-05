@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import WithAuthAdmin from "../auth/WithAuthAdmin";
+import { useEffect, useState, useCallback } from "react";
 import NavbarPrivada from "../components/NavbarPrivada";
 
 import ConfirmDialog from "../components/dialogs/ConfirmDialog";
@@ -8,6 +7,7 @@ import DialogTreinoDetalhes from "../components/dialogs/DialogTreinoDetalhes";
 import CardTreino from "../components/cards/CardTreino";
 
 import {
+  getMeusTreinosAPI,
   getTreinosAPI,
   cadastrarTreinoAPI,
   atualizarTreinoAPI,
@@ -37,16 +37,23 @@ function TreinosAdminPage() {
 
   const usuario = getUsuario();
 
-  const carregarTreinos = async () => {
+  const carregarTreinos = useCallback(async () => {
     setLoading(true);
-    const data = await getTreinosAPI();
+
+    let data;
+    if (usuario.tipo === "aluno") {
+      data = await getMeusTreinosAPI();
+    } else {
+      data = await getTreinosAPI();
+    }
+
     setTreinos(data);
     setLoading(false);
-  };
+  }, [usuario.tipo]);
 
   useEffect(() => {
     carregarTreinos();
-  }, []);
+  }, [carregarTreinos]);
 
   const abrirDialogCriar = () => {
     console.log("abrirDialogCriar");
@@ -68,6 +75,7 @@ function TreinosAdminPage() {
   };
 
   const salvarTreino = async () => {
+    console.log("salvarTreino", formData);
     if (editando) {
       await atualizarTreinoAPI(editando.id, formData);
     } else {
@@ -91,7 +99,7 @@ function TreinosAdminPage() {
       <div className="p-10">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Gerenciar Treinos</h1>
-          {usuario.tipo === "admin" && (
+          {(usuario.tipo === "admin" || usuario.tipo === "professor") && (
             <button className={buttonPrimary} onClick={abrirDialogCriar}>
               + Novo Treino
             </button>
@@ -106,13 +114,18 @@ function TreinosAdminPage() {
               <CardTreino
                 key={treino.id}
                 treino={treino}
-                isAdmin={usuario.tipo === "admin"}
+                isAdmin={
+                  usuario.tipo === "admin" || usuario.tipo === "professor"
+                }
                 onDetalhes={(t) => {
                   setTreinoSelecionado(t);
                   setDialogDetalhesOpen(true);
                 }}
-                onEditar={(t) => prepararEdicao(t)}
-                onExcluir={(t) => {
+                onEdit={(t) => {
+                  prepararEdicao(t);
+                  setTreinoSelecionado(t);
+                }}
+                onDelete={(t) => {
                   setTreinoParaDeletar(t);
                   setConfirmOpen(true);
                 }}
@@ -130,6 +143,8 @@ function TreinosAdminPage() {
         formData={formData}
         setFormData={setFormData}
         editando={editando}
+        treinoEditado={treinoSelecionado}
+        usuario={usuario}
       />
 
       {/* Modal Detalhes com Exercícios */}
@@ -137,7 +152,7 @@ function TreinosAdminPage() {
         open={dialogDetalhesOpen}
         onClose={() => setDialogDetalhesOpen(false)}
         treino={treinoSelecionado}
-        admin={usuario.tipo === "admin"} // libera botões de editar/adicionar exercício
+        admin={usuario.tipo === "admin" || usuario.tipo === "professor"}
       />
 
       <ConfirmDialog
