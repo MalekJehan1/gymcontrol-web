@@ -2,7 +2,7 @@ import axios from "axios";
 import { getToken } from "../auth/Autenticacao";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_ENDERECO_API,
+  baseURL: "http://localhost:3000",
 });
 
 api.interceptors.request.use((config) => {

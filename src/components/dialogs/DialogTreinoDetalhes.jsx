@@ -18,10 +18,10 @@ export default function DialogTreinoDetalhes({ open, onClose, treino }) {
           </p>
 
           <p className="text-neutral-300 mb-1">
-            Professor: {treino.professor?.usuario?.nome || "Não informado"}
+            Professor: {treino.professor?.usuario?.nome || (treino.professor_id ? `ID: ${treino.professor_id}` : "Não informado")}
           </p>
           <p className="text-neutral-300 mb-4">
-            Aluno: {treino.aluno?.usuario?.nome || "Não informado"}
+            Aluno: {treino.aluno?.usuario?.nome || (treino.aluno_id ? `ID: ${treino.aluno_id}` : "Não informado")}
           </p>
 
           <h3 className="text-lg font-semibold mb-2 text-sky-600">
