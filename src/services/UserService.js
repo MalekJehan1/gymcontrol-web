@@ -11,8 +11,20 @@ export const getUsuarioPorIdAPI = async (id) => {
 };
 
 export const cadastrarUsuarioAPI = async (usuario) => {
-  const response = await api.post("/usuarios", usuario);
-  return response.data;
+  var response;
+  try{
+
+    response = await api.post("/usuarios", usuario);
+    if(response.status != 200){
+      return "erro";
+    }
+    return response.data
+  }catch(err){
+
+    console.log(err);
+    
+  }
+
 };
 
 export const atualizarMeuUsuarioAPI = async (usuario) => {

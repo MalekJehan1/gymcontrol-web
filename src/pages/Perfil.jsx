@@ -23,48 +23,48 @@ function Perfil() {
       .join(" ");
   }
 
-  const salvar = async () => {
-    setErro("");
+const salvar = async () => {
+  setErro("");
 
-    if (!nome.trim()) return setErro("O nome é obrigatório.");
-    if (nome.trim().length < 2) return setErro("Nome muito curto.");
+  if (!nome.trim()) return setErro("O nome é obrigatório.");
+  if (nome.trim().length < 2) return setErro("Nome muito curto.");
+  if (!sobrenome.trim()) return setErro("O sobrenome é obrigatório.");
+  if (sobrenome.trim().length < 2) return setErro("Sobrenome muito curto.");
+  if (senha && senha.length < 6) return setErro("A senha deve ter no mínimo 6 caracteres.");
 
-    if (!sobrenome.trim()) return setErro("O sobrenome é obrigatório.");
-    if (sobrenome.trim().length < 2) return setErro("Sobrenome muito curto.");
+  setLoading(true);
 
-    if (senha && senha.length < 6)
-      return setErro("A senha deve ter no mínimo 6 caracteres.");
+  try {
+    await atualizarMeuUsuarioAPI({
+      nome: formatarNome(nome),
+      sobrenome: formatarNome(sobrenome),
+      senha: senha || undefined,
+    });
 
-    setLoading(true);
-
-    try {
-      await atualizarMeuUsuarioAPI({
-        nome: formatarNome(nome),
-        sobrenome: formatarNome(sobrenome),
-        senha: senha || undefined,
-      });
-
-      // PEGAR O AUTH DO LOCALSTORAGE COMPLETO
-      const auth = JSON.parse(localStorage.getItem("auth"));
+    // PEGAR O AUTH DO LOCALSTORAGE na chave correta
+    const localStorageAutenticacao = localStorage.getItem("gymcontrol/autenticacao");
+    if (localStorageAutenticacao) {
+      const auth = JSON.parse(localStorageAutenticacao);
 
       const atualizado = {
-        ...auth, // mantem token, auth = true, etc
+        ...auth,
         usuario: {
-          ...auth.usuario, // mantém id, email, tipo, created_at
+          ...auth.usuario,
           nome: formatarNome(nome),
           sobrenome: formatarNome(sobrenome),
         },
       };
 
-      localStorage.setItem("auth", JSON.stringify(atualizado));
-
-      setModalAberto(false);
-    } catch (err) {
-      setErro("Erro inesperado. " + err.message);
+      localStorage.setItem("gymcontrol/autenticacao", JSON.stringify(atualizado));
     }
 
-    setLoading(false);
-  };
+    setModalAberto(false);
+  } catch (err) {
+    setErro("Erro inesperado. " + err.message);
+  }
+
+  setLoading(false);
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-neutral-900 to-black text-white">

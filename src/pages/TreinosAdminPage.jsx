@@ -39,17 +39,28 @@ function TreinosAdminPage() {
 
   const carregarTreinos = useCallback(async () => {
     setLoading(true);
-
-    let data;
-    if (usuario.tipo === "aluno") {
-      data = await getMeusTreinosAPI();
-    } else {
-      data = await getTreinosAPI();
+  
+    try {
+      let data = [];
+  
+      if (usuario.tipo === "aluno") {
+        const result = await getMeusTreinosAPI();
+        data = Array.isArray(result) ? result : []; // garante array
+      } else {
+        const result = await getTreinosAPI();
+        data = Array.isArray(result) ? result : [];
+      }
+  
+      setTreinos(data);
+    } catch (err) {
+      console.error("Erro ao carregar treinos:", err);
+      setTreinos([]); // garante que treinos seja sempre array
+    } finally {
+      setLoading(false);
     }
-
-    setTreinos(data);
-    setLoading(false);
   }, [usuario.tipo]);
+  
+  
 
   useEffect(() => {
     carregarTreinos();
@@ -110,7 +121,7 @@ function TreinosAdminPage() {
           <p>Carregando...</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {treinos.map((treino) => (
+            {Array.isArray(treinos) && treinos.map((treino) => (
               <CardTreino
                 key={treino.id}
                 treino={treino}
